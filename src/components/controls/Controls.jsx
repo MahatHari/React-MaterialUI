@@ -1,8 +1,9 @@
 import  Input  from './Input'
 import RadioGroup from './RadioGroup'
-export const Controls= {
+import Select from './Select'
+ const Controls= {
     RadioGroup,
-   Input
+     Input,
+   Select
 }
-
-//export default Controls;
+export default Controls;
