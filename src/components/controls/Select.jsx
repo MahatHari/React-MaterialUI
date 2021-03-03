@@ -6,14 +6,14 @@ export default function Select(props) {
     return (
         
         <FormControl variant="outlined">
-            <InputLabel>{label}</InputLabel>
+            <InputLabel > {label} </InputLabel>
             <MuiSelect
                 name={name}
-                lable={label}
                 value={value}
+                label={label}
                 onChange={onChange}
             >
-                <MenuItem value='None'></MenuItem>
+                <MenuItem value=''>None</MenuItem>
                 {
                     options.map(
                         item => (

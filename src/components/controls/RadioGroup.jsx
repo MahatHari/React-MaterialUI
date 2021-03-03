@@ -14,7 +14,7 @@ export default function RadioGroup(props) {
 
                 >{
                     items.map(
-                        (item, index) => (
+                        (item) => (
                             <FormControlLabel key={item.id} value={item.id} control={<Radio />} label={item.title} />
                         )
                     )
