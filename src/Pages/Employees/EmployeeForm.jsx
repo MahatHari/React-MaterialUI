@@ -12,7 +12,7 @@ const genderItems = [
 ];
 
 const initialFieldValues = {
-  id: 0,
+  id: '0',
   fullName: '',
   email: '',
   mobile: '',
@@ -23,16 +23,24 @@ const initialFieldValues = {
   isParmanent: false,
 };
 export default function EmployeeForm() {
-  const validate = () => {
-    let temp = {};
-    temp.fullName = values.fullName ? '' : 'Name is Required';
-    temp.email = /$^|.+@.+..+/.test(values.email) ? '' : 'Email is not valid';
-    temp.mobile =
-      values.mobile.length > 9 ? '' : 'Name Minimum 10 numbers Required';
-    temp.departmentId =
-      values.departmentId.length !== 0 ? '' : 'Choose department';
+  const validate = (fieldValues = values) => {
+    let temp = { ...errors };
+    if ('fullName' in fieldValues)
+      temp.fullName = fieldValues.fullName ? '' : 'Name is Required';
+    if ('email' in fieldValues)
+      temp.email = /$^|.+@.+..+/.test(fieldValues.email)
+        ? ''
+        : 'Email is not valid';
+    if ('mobile' in fieldValues)
+      temp.mobile =
+        fieldValues.mobile.length > 9 ? '' : 'Name Minimum 10 numbers Required';
+    if ('departmentId' in fieldValues)
+      temp.departmentId =
+        fieldValues.departmentId.length !== 0 ? '' : 'Choose department';
+
     setErrors({ ...temp });
-    return Object.values(temp).every((x) => x === '');
+    if (fieldValues === values)
+      return Object.values(temp).every((x) => x === '');
   };
   const {
     values,
@@ -41,11 +49,12 @@ export default function EmployeeForm() {
     errors,
     setErrors,
     resetForm,
-  } = useForm(initialFieldValues);
+  } = useForm(initialFieldValues, true, validate);
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validate()) {
-      window.alert('testing');
+      employeeService.insertEmployee(values);
+      resetForm();
     }
   };
 

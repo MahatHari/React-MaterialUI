@@ -10,7 +10,11 @@ const useStyle = makeStyles((theme) => ({
   },
 }));
 
-export function useForm(initialFieldValues) {
+export function useForm(
+  initialFieldValues,
+  validateOnChange = false,
+  validate
+) {
   const [values, setValues] = useState(initialFieldValues);
   const [errors, setErrors] = useState({});
   const handleInputChange = (e) => {
@@ -19,6 +23,7 @@ export function useForm(initialFieldValues) {
       ...values,
       [name]: value,
     });
+    if (validateOnChange) validate({ [name]: value });
   };
   const resetForm = () => {
     setValues(initialFieldValues);
