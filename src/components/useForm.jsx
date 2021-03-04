@@ -1,40 +1,46 @@
-import { makeStyles } from '@material-ui/core'
-import React, { useState } from 'react'
+import { makeStyles } from '@material-ui/core';
+import React, { useState } from 'react';
 
-
-const useStyle = makeStyles(theme => ({
-    root: {
-        '& .MuiFormControl-root': {
-            width: '80%',
-            margin:theme.spacing(1)
-        }
-    }
-}))
+const useStyle = makeStyles((theme) => ({
+  root: {
+    '& .MuiFormControl-root': {
+      width: '80%',
+      margin: theme.spacing(1),
+    },
+  },
+}));
 
 export function useForm(initialFieldValues) {
-    
-   
-    const [values, setValues] = useState(initialFieldValues)
+  const [values, setValues] = useState(initialFieldValues);
+  const [errors, setErrors] = useState({});
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setValues({
+      ...values,
+      [name]: value,
+    });
+  };
+  const resetForm = () => {
+    setValues(initialFieldValues);
+    setErrors({});
+  };
 
-     const handleInputChange = (e) => {
-        const { name, value } = e.target
-        setValues({
-            ...values,
-            [name]:value
-        })
-    }
-
-    return {
-            values, setValues, handleInputChange
-      }
+  return {
+    values,
+    setValues,
+    handleInputChange,
+    errors,
+    setErrors,
+    resetForm,
+  };
 }
 
-
 export function Form(props) {
-    const classes= useStyle()
-    return (
-        <form className={classes.root} autoComplete="off">
-            {props.children}
-        </form>
-    )
+  const classes = useStyle();
+  const { children, ...other } = props;
+  return (
+    <form className={classes.root} autoComplete='off' {...other}>
+      {children}
+    </form>
+  );
 }
